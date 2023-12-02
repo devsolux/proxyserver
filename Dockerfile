@@ -1,6 +1,6 @@
 FROM golang:alpine
 
-LABEL maintainer="me+proxyserver@samjakob.com"
+LABEL maintainer="me+proxyserver@devsolux.com"
 
 WORKDIR /etc/proxyserver
 
