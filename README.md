@@ -1,0 +1,97 @@
+# Proxyserver
+
+A simple proxy server.
+
+---
+
+## Installation 📦
+
+**Proxyserver requires `zenity` on Linux. This is available in most distribution package managers.**
+
+We're still working on automated installers. For now, copy the binary to a user-writeable location and launch the application.  
+A dialog will open and explain the certificate installation process - there are more detailed instructions in
+our [Certificate-Installation](./Certificate-Installation.md).
+
+- macOS:
+
+```bash
+# To build the desktop tray application:
+$ ./build.sh darwin
+
+# To build the server application:
+$ ./build.sh darwin server
+```
+
+- For Linux desktops:
+
+```bash
+# To build the desktop tray application:
+$ ./build.sh linux
+
+# To build the server application:
+$ ./build.sh linux server
+```
+
+- For Windows desktops:
+
+```bash
+# To build the desktop tray application:
+$ ./build.sh windows
+
+# To build the server application:
+$ ./build.sh windows server
+```
+
+> The build output is placed in the `out/` directory.
+
+## Installers 🧙
+
+The `installers/` directory contains scripts for each platform to generate an installer application.  
+Each platform's installer directory, contains the relevant information for that installer.
+
+- [macOS](installers/darwin)
+- [Windows](installers/windows)
+- [Linux](installers/linux)
+
+## Usage 👨‍💻
+
+### Desktops 🖥️
+
+The proxy will add a tray icon to the native system tray for your platform, which will contain all of the options for the proxy.
+
+### Servers 🖧
+
+To use the proxy on a server, clone the package, build the server using the instructions above, and use:
+
+```bash
+$ ./out/<platform>-server/server --host="<hostname>:<port>" --token="<token_or_blank>"
+
+# e.g. on Linux
+$ ./out/linux-server/server --host="<hostname>:<port>" --token="<token_or_blank>"
+
+# or on Windows
+$ ./out/windows-server/server.exe --host="<hostname>:<port>" --token="<token_or_blank>"
+```
+
+- The `host` and `token` parameters are optional. The defaults are as follows:
+- `host`: `localhost:9159`
+- `token`: blank; allowing anyone to access (see below)
+
+**NOTE:** When the token is blank it will allow *anybody* to access your proxy server. This may be what you want, but please be sure to
+consider the security implications.
+
+#### Server Command-Line Options
+
+The server binary supports various options to customize your instance. Each of these are in the format shown in the example above,
+e.g., `host` would be specified as `--host="your host here"`, or banned outputs would
+be `--banned-outputs="banned output 1,banned output 2"`.
+
+- `host` (default: `localhost:9159`) -- the hostname the server should listen on.
+- `token` (default: `<blank>`) -- the proxy Access Token used to restrict access to the server (feature disabled if left blank).
+- `allowed-origins` (default: `*`) -- a comma separated list of allowed origins (for the Access-Control-Allow-... (CORS) headers) (use * to
+  permit any)
+- `banned-outputs` (default: `<blank>`) -- a comma separated list of values to redact from responses (feature disabled if left blank).
+- `banned-dests` (default: `<blank>`) -- a comma separated list of destination hosts to prevent access to (feature disabled if left blank).
+
+Each of these may be passed as command-line parameters so to apply these or deploy changes, simply change your invocation of the Proxyserver
+server to your preferred command-line options and re-run proxyserver.
